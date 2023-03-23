@@ -1,5 +1,6 @@
 import 'dart:ui';
 
+import 'package:ant_smartphone_addiction_app/time_slot.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -24,11 +25,14 @@ class _HomeScreenState extends State<HomeScreen> {
   TextEditingController selectDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
 
+  List<AppInfo>? app_list_data;
+
   @override
   void initState() {
     selectDateController.text = ""; //set the initial value of text field
     endDateController.text = ""; //set the initial value of text field
 
+    fetchSocialMediaOnlysData();
     super.initState();
   }
 
@@ -222,6 +226,36 @@ class _HomeScreenState extends State<HomeScreen> {
         });
   }
 
+  final List<String> _app_packageNames = [
+    'com.instagram.android', // instagram
+
+    // 'com.facebook.orca' // facebook
+    'com.facebook.katana' // facebook
+        // 'com.example.facebook' // facebook
+        // 'com.facebook.android' // facebook
+
+    'com.twitter.android', // twitter
+    'com.zhiliaoapp.musically', // ticktok
+    'com.whatsapp', // whatsapp
+  ];
+
+  fetchSocialMediaOnlysData() async {
+    List<AppInfo> _app_list_items = [];
+
+    for (AppInfo info in await InstalledApps.getInstalledApps(true, true)) {
+      if (_app_packageNames.contains(info.packageName)) {
+        _app_list_items.add(info);
+      }
+    }
+
+    setState(() {
+      app_list_data = _app_list_items;
+      // next = body['next'];
+    });
+
+    return [];
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -280,12 +314,13 @@ class _HomeScreenState extends State<HomeScreen> {
 
             ListTile(
               leading: Icon(
-                Icons.lock_outline,
+                Icons.av_timer,
               ),
-              title: const Text('Create'),
+              title: const Text('Time Slot'),
               onTap: () {
                 Navigator.pop(context);
-                _add_CalendarEvent_Dialog(context);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (context) => TimeSlotScreen()));
               },
             ),
 
@@ -419,64 +454,65 @@ class _HomeScreenState extends State<HomeScreen> {
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
                   ),
                 ),
-                Expanded(
-                  child: FutureBuilder<List<AppInfo>>(
-                    future: InstalledApps.getInstalledApps(true, true),
-                    builder: (BuildContext buildContext,
-                        AsyncSnapshot<List<AppInfo>> snapshot) {
-                      print(snapshot.data![0].packageName);
-                      return snapshot.connectionState == ConnectionState.done
-                          ? snapshot.hasData
-                              ? ListView.builder(
-                                  itemCount: snapshot.data!.length,
-                                  itemBuilder: (context, index) {
-                                    AppInfo app = snapshot.data![index];
-                                    return Card(
-                                      child: SwitchListTile(
-                                        value: _darkMode,
-                                        title: Text(app.name!),
-                                        subtitle: Text(app.getVersionInfo()),
-                                        secondary: Padding(
-                                          padding: const EdgeInsets.all(9.0),
-                                          child: CircleAvatar(
-                                          backgroundColor: Colors.transparent,
-                                          child: Image.memory(app.icon!),
-                                        ),
-                                        ),
-                                        onChanged: (newValue) {
-                                          setState(() {
-                                            _darkMode = newValue;
-                                          });
-                                        },
-                                        // visualDensity: VisualDensity.adaptivePlatformDensity,
-                                        // switchType: SwitchType.material,
-                                        activeColor: Colors.indigo,
-                                      ),
+                Expanded(child: social_mediaComponent()),
 
+                // Expanded(
+                //   child: FutureBuilder<List<AppInfo>>(
+                //     future: InstalledApps.getInstalledApps(true, true),
+                //     builder: (BuildContext buildContext,
+                //         AsyncSnapshot<List<AppInfo>> snapshot) {
+                //       print(snapshot.data![0].packageName);
+                //       return snapshot.connectionState == ConnectionState.done
+                //           ? snapshot.hasData
+                //               ? ListView.builder(
+                //                   itemCount: snapshot.data!.length,
+                //                   itemBuilder: (context, index) {
+                //                     AppInfo app = snapshot.data![index];
+                //                     return Card(
+                //                       child: SwitchListTile(
+                //                         value: _darkMode,
+                //                         title: Text(app.name!),
+                //                         subtitle: Text(app.getVersionInfo()),
+                //                         secondary: Padding(
+                //                           padding: const EdgeInsets.all(9.0),
+                //                           child: CircleAvatar(
+                //                             backgroundColor: Colors.transparent,
+                //                             child: Image.memory(app.icon!),
+                //                           ),
+                //                         ),
+                //                         onChanged: (newValue) {
+                //                           setState(() {
+                //                             _darkMode = newValue;
+                //                           });
+                //                         },
+                //                         // visualDensity: VisualDensity.adaptivePlatformDensity,
+                //                         // switchType: SwitchType.material,
+                //                         activeColor: Colors.indigo,
+                //                       ),
 
-                                      // child: ListTile(
-                                        // leading: CircleAvatar(
-                                        //   backgroundColor: Colors.transparent,
-                                        //   child: Image.memory(app.icon!),
-                                        // ),
-                                      //   title: Text(app.name!),
-                                      //   subtitle: Text(app.getVersionInfo()),
-                                      //   // onTap: () =>
-                                      //   //     InstalledApps.startApp(app.packageName!),
-                                      //   onLongPress: () =>
-                                      //       InstalledApps.openSettings(
-                                      //           app.packageName!),
-                                      // ),
-                                    );
-                                  },
-                                )
-                              : Center(
-                                  child: Text(
-                                      "Error occurred while getting installed apps ...."))
-                          : Center(child: Text("Getting installed apps ...."));
-                    },
-                  ),
-                ),
+                //                       // child: ListTile(
+                //                       // leading: CircleAvatar(
+                //                       //   backgroundColor: Colors.transparent,
+                //                       //   child: Image.memory(app.icon!),
+                //                       // ),
+                //                       //   title: Text(app.name!),
+                //                       //   subtitle: Text(app.getVersionInfo()),
+                //                       //   // onTap: () =>
+                //                       //   //     InstalledApps.startApp(app.packageName!),
+                //                       //   onLongPress: () =>
+                //                       //       InstalledApps.openSettings(
+                //                       //           app.packageName!),
+                //                       // ),
+                //                     );
+                //                   },
+                //                 )
+                //               : Center(
+                //                   child: Text(
+                //                       "Error occurred while getting installed apps ...."))
+                //           : Center(child: Text("Getting installed apps ...."));
+                //     },
+                //   ),
+                // ),
               ],
             ),
           ],
@@ -484,34 +520,65 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     );
   }
+
+  social_mediaComponent() {
+    if (app_list_data == null) {
+      return Container(
+          // color: Colors.black,
+          // size: 50.0,
+          );
+    } else if (app_list_data != null && app_list_data?.length == 0) {
+      // No Data
+      return Column(children: [
+        Image.asset("assets/images/no_data.gif"),
+        // Text(
+        //   AppLocalizations.of(context)!.no_shipped,
+        //   style: TextStyle(fontSize: 18),
+        // )
+      ]);
+    } else {
+      return ListView.builder(
+        itemCount: app_list_data!.length,
+        itemBuilder: (context, index) {
+          AppInfo app = app_list_data![index];
+          return Card(
+            child: SwitchListTile(
+              value: _darkMode,
+              title: Text(app.name!),
+              subtitle: Text(app.getVersionInfo()),
+              secondary: Padding(
+                padding: const EdgeInsets.all(9.0),
+                child: CircleAvatar(
+                  backgroundColor: Colors.transparent,
+                  child: Image.memory(app.icon!),
+                ),
+              ),
+              onChanged: (newValue) {
+                setState(() {
+                  _darkMode = newValue;
+                });
+              },
+              // visualDensity: VisualDensity.adaptivePlatformDensity,
+              // switchType: SwitchType.material,
+              activeColor: Colors.indigo,
+            ),
+
+            // child: ListTile(
+            // leading: CircleAvatar(
+            //   backgroundColor: Colors.transparent,
+            //   child: Image.memory(app.icon!),
+            // ),
+            //   title: Text(app.name!),
+            //   subtitle: Text(app.getVersionInfo()),
+            //   // onTap: () =>
+            //   //     InstalledApps.startApp(app.packageName!),
+            //   onLongPress: () =>
+            //       InstalledApps.openSettings(
+            //           app.packageName!),
+            // ),
+          );
+        },
+      );
+    }
+  }
 }
-
-
-
-//               Padding(
-//                 padding:
-//                     const EdgeInsets.symmetric(horizontal: 50.0, ),
-//                 child: Container(
-//                     margin: EdgeInsets.symmetric(vertical: 25),
-//                     height: 45,
-//                     width: double.maxFinite,
-//                     child: ElevatedButton(
-//                       style: ElevatedButton.styleFrom(
-//                           elevation: 0,
-//                           primary: Theme.of(context).primaryColor,
-//                           shape: RoundedRectangleBorder(
-//                               borderRadius: BorderRadius.circular(20))),
-//                       onPressed: () {
-//                         // Navigator.pop(context);
-
-//                 //         Navigator.push(
-//                 // context, MaterialPageRoute(builder: (context) => EditProfileScreen()));
-//                       },
-//                       child: Text('Quick Block All'),
-//                     ),
-//                   ),
-//               ),
-
-              
-
-        
