@@ -49,6 +49,10 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
+  _automaticNotification () {
+    // TODO set  automa tic notofication in every d ay 
+  }
+
   _add_CalendarEvent_Dialog(BuildContext context) {
     showDialog(
         context: context,
@@ -524,6 +528,7 @@ class _HomeScreenState extends State<HomeScreen> {
   social_mediaComponent() {
     if (app_list_data == null) {
       return Container(
+        child: Center(child: Text('Loading...')),
           // color: Colors.black,
           // size: 50.0,
           );

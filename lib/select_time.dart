@@ -1,23 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
+import 'package:installed_apps/app_info.dart';
 
 class Select_TimeScreen extends StatefulWidget {
+  String? packageName;
+
+  Select_TimeScreen(
+    
+    this.packageName,
+  );
   @override
   State<Select_TimeScreen> createState() => _Select_TimeScreenState();
 }
 
 class _Select_TimeScreenState extends State<Select_TimeScreen> {
-
   bool _dailyMode = true;
   String? chooseEndTimeValue;
 
   DateTime _dateTime = DateTime.now();
-  
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-       appBar: AppBar(
+      appBar: AppBar(
         elevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.black,
@@ -29,124 +35,118 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
         //       color: Colors.black,
         //     ),
         //     onPressed: () async {
-              
-              // do something
-              // final PermissionStatus permissionStatus =
-              //     await _getPermission();
-              // if (permissionStatus ==
-              //     PermissionStatus.granted) {
-              //   //We can now access our contacts here
 
-              //   Navigator.push(
-              //       context,
-              //       MaterialPageRoute(
-              //           builder: (context) =>
-              //               SelectContactScreen()));
-              // } else {
-              //   //If permissions have been denied show standard cupertino alert dialog
-              //   showDialog(
-              //       context: context,
-              //       builder: (BuildContext context) =>
-              //           CupertinoAlertDialog(
-              //             title:
-              //                 Text('Permissions error'),
-              //             content: Text(
-              //                 'Please enable contacts access '
-              //                 'permission in system settings'),
-              //             actions: <Widget>[
-              //               CupertinoDialogAction(
-              //                 child: Text('OK'),
-              //                 onPressed: () =>
-              //                     Navigator.of(context)
-              //                         .pop(),
-              //               )
-              //             ],
-              //           ));
-              // }
-            // },
-          // )
+        // do something
+        // final PermissionStatus permissionStatus =
+        //     await _getPermission();
+        // if (permissionStatus ==
+        //     PermissionStatus.granted) {
+        //   //We can now access our contacts here
+
+        //   Navigator.push(
+        //       context,
+        //       MaterialPageRoute(
+        //           builder: (context) =>
+        //               SelectContactScreen()));
+        // } else {
+        //   //If permissions have been denied show standard cupertino alert dialog
+        //   showDialog(
+        //       context: context,
+        //       builder: (BuildContext context) =>
+        //           CupertinoAlertDialog(
+        //             title:
+        //                 Text('Permissions error'),
+        //             content: Text(
+        //                 'Please enable contacts access '
+        //                 'permission in system settings'),
+        //             actions: <Widget>[
+        //               CupertinoDialogAction(
+        //                 child: Text('OK'),
+        //                 onPressed: () =>
+        //                     Navigator.of(context)
+        //                         .pop(),
+        //               )
+        //             ],
+        //           ));
+        // }
+        // },
+        // )
         // ],
       ),
-
       body: ListView(
         children: [
           _timeSpinnnerView(),
 
-           TextFormField(
-            // minLines: 5,
-            // maxLines: 7,
-            decoration: InputDecoration(
-             
-              hintText: 'Silent Name eg: meeting',
-              
-            ),
+          // TextFormField(
+          //   // minLines: 5,
+          //   // maxLines: 7,
+          //   decoration: InputDecoration(
+          //     hintText: 'Silent Name eg: meeting',
+          //   ),
 
-            // controller: controllerAddress,
-          ),
+          //   // controller: controllerAddress,
+          // ),
 
           const SizedBox(
             height: 16,
           ),
 
           SwitchListTile(
-              value: _dailyMode,
-              title: Text(
-                'Everyday',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
+            value: _dailyMode,
+            title: Text(
+              'Everyday',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
               ),
-              subtitle: Text(
-                'Silence 1 hr On time setted',
-                
-              ),
-              secondary: Padding(
-                padding: const EdgeInsets.all(9.0),
-                child: Icon(Icons.wifi),
-              ),
-              onChanged: (newValue) {
-                setState(() {
-                  _dailyMode = newValue;
-                });
-              },
-              // visualDensity: VisualDensity.adaptivePlatformDensity,
-              // switchType: SwitchType.material,
-              activeColor: Colors.indigo,
             ),
-
-            SwitchListTile(
-              value: _dailyMode,
-              title: Text(
-                'EveryWeek',
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.w500,
-                ),
-              ),
-              subtitle: Text(
-                'Silence 1 hr On time setted',
-                
-              ),
-              secondary: Padding(
-                padding: const EdgeInsets.all(9.0),
-                child: Icon(Icons.wifi),
-              ),
-              onChanged: (newValue) {
-                setState(() {
-                  _dailyMode = newValue;
-                });
-              },
-              // visualDensity: VisualDensity.adaptivePlatformDensity,
-              // switchType: SwitchType.material,
-              activeColor: Colors.indigo,
+            subtitle: Text(
+              'Silence 1 hr On time setted',
             ),
+            secondary: Padding(
+              padding: const EdgeInsets.all(9.0),
+              child: Icon(Icons.wifi),
+            ),
+            onChanged: (newValue) {
+              setState(() {
+                _dailyMode = newValue;
+              });
+            },
+            // visualDensity: VisualDensity.adaptivePlatformDensity,
+            // switchType: SwitchType.material,
+            activeColor: Colors.indigo,
+          ),
 
+          SwitchListTile(
+            value: _dailyMode,
+            title: Text(
+              'EveryWeek',
+              style: TextStyle(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+              ),
+            ),
+            subtitle: Text(
+              'Silence 1 hr On time setted',
+            ),
+            secondary: Padding(
+              padding: const EdgeInsets.all(9.0),
+              child: Icon(Icons.wifi),
+            ),
+            onChanged: (newValue) {
+              setState(() {
+                _dailyMode = newValue;
+              });
+            },
+            // visualDensity: VisualDensity.adaptivePlatformDensity,
+            // switchType: SwitchType.material,
+            activeColor: Colors.indigo,
+          ),
 
-            Container(
+          Container(
             // padding: const EdgeInsets.all(0.0),
-            padding: EdgeInsets.only(
-                left: 10.0, right: 10.0, top: 0, bottom: 0),
+            padding:
+                EdgeInsets.only(left: 10.0, right: 10.0, top: 0, bottom: 0),
             // decoration: BoxDecoration(
             //     border: Border.all(color: Colors.grey),
             //     borderRadius: BorderRadius.circular(12)),
@@ -209,12 +209,8 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
           // const SizedBox(
           //   height: 16,
           // ),
-
-          
         ],
       ),
-
-
       bottomNavigationBar: Container(
         // height: 100,
         // color: Colors.white,
@@ -243,85 +239,83 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
           ),
         ),
       ),
-    
     );
   }
 
   _timeSpinnnerView() {
-      return Container(
-        padding: EdgeInsets.only(top: 50),
-        child: Column(
-          children: <Widget>[
-  //            hourMinute12H(),
-            hourMinute15Interval(),
-  //            hourMinuteSecond(),
-  //            hourMinute12HCustomStyle(),
-            Container(
-              margin: EdgeInsets.symmetric(vertical: 50),
-              child: Text(
-                _dateTime.hour.toString().padLeft(2, '0') +
-                    ':' +
-                    _dateTime.minute.toString().padLeft(2, '0') +
-                    ':' +
-                    _dateTime.second.toString().padLeft(2, '0'),
-                style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
-              ),
+    return Container(
+      padding: EdgeInsets.only(top: 50),
+      child: Column(
+        children: <Widget>[
+          //            hourMinute12H(),
+          hourMinute15Interval(),
+          //            hourMinuteSecond(),
+          //            hourMinute12HCustomStyle(),
+          Container(
+            margin: EdgeInsets.symmetric(vertical: 50),
+            child: Text(
+              _dateTime.hour.toString().padLeft(2, '0') +
+                  ':' +
+                  _dateTime.minute.toString().padLeft(2, '0') +
+                  ':' +
+                  _dateTime.second.toString().padLeft(2, '0'),
+              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
-          ],
-        ),
-      );
-    }
+          ),
+        ],
+      ),
+    );
+  }
 
-    /// SAMPLE
-    Widget hourMinute12H() {
-      return new TimePickerSpinner(
-        is24HourMode: false,
-        onTimeChange: (time) {
-          setState(() {
-            _dateTime = time;
-          });
-        },
-      );
-    }
+  /// SAMPLE
+  Widget hourMinute12H() {
+    return new TimePickerSpinner(
+      is24HourMode: false,
+      onTimeChange: (time) {
+        setState(() {
+          _dateTime = time;
+        });
+      },
+    );
+  }
 
-    Widget hourMinuteSecond() {
-      return new TimePickerSpinner(
-        isShowSeconds: true,
-        onTimeChange: (time) {
-          setState(() {
-            _dateTime = time;
-          });
-        },
-      );
-    }
+  Widget hourMinuteSecond() {
+    return new TimePickerSpinner(
+      isShowSeconds: true,
+      onTimeChange: (time) {
+        setState(() {
+          _dateTime = time;
+        });
+      },
+    );
+  }
 
-    Widget hourMinute15Interval() {
-      return new TimePickerSpinner(
-        spacing: 40,
-        minutesInterval: 1,
-        onTimeChange: (time) {
-          setState(() {
-            _dateTime = time;
-          });
-        },
-      );
-    }
+  Widget hourMinute15Interval() {
+    return new TimePickerSpinner(
+      spacing: 40,
+      minutesInterval: 1,
+      onTimeChange: (time) {
+        setState(() {
+          _dateTime = time;
+        });
+      },
+    );
+  }
 
-    Widget hourMinute12HCustomStyle() {
-      return new TimePickerSpinner(
-        is24HourMode: false,
-        normalTextStyle: TextStyle(fontSize: 24, color: Colors.deepOrange),
-        highlightedTextStyle: TextStyle(fontSize: 24, color: Colors.yellow),
-        spacing: 50,
-        itemHeight: 80,
-        isForce2Digits: true,
-        minutesInterval: 15,
-        onTimeChange: (time) {
-          setState(() {
-            _dateTime = time;
-          });
-        },
-      );
-    }
+  Widget hourMinute12HCustomStyle() {
+    return new TimePickerSpinner(
+      is24HourMode: false,
+      normalTextStyle: TextStyle(fontSize: 24, color: Colors.deepOrange),
+      highlightedTextStyle: TextStyle(fontSize: 24, color: Colors.yellow),
+      spacing: 50,
+      itemHeight: 80,
+      isForce2Digits: true,
+      minutesInterval: 15,
+      onTimeChange: (time) {
+        setState(() {
+          _dateTime = time;
+        });
+      },
+    );
+  }
 }
-
