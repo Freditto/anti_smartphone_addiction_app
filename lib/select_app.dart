@@ -13,7 +13,6 @@ class SelectAppScreen extends StatefulWidget {
 class _SelectAppScreenState extends State<SelectAppScreen> {
   List<AppInfo>? app_list_data;
 
-  List<AppUsageInfo> _infos = [];
 
   @override
   void initState() {
@@ -55,7 +54,6 @@ class _SelectAppScreenState extends State<SelectAppScreen> {
   }
 
   List<EventUsageInfo> events = [];
-  Map<String?, NetworkInfo?> _netInfoMap = Map();
 
   
   Future<void> initUsage() async {
@@ -73,8 +71,6 @@ class _SelectAppScreenState extends State<SelectAppScreen> {
         networkType: NetworkType.all,
       );
 
-      Map<String?, NetworkInfo?> netInfoMap = Map.fromIterable(networkInfos,
-          key: (v) => v.packageName, value: (v) => v);
 
       List<UsageInfo> t = await UsageStats.queryUsageStats(startDate, endDate);
 
@@ -98,7 +94,6 @@ class _SelectAppScreenState extends State<SelectAppScreen> {
 
       this.setState(() {
         events = queryEvents.reversed.toList();
-        _netInfoMap = netInfoMap;
       });
     } catch (err) {
       print(err);
@@ -111,7 +106,6 @@ class _SelectAppScreenState extends State<SelectAppScreen> {
       DateTime startDate = endDate.subtract(Duration(hours: 1));
       List<AppUsageInfo> infoList =
           await AppUsage().getAppUsage(startDate, endDate);
-      setState(() => _infos = infoList);
 
       for (var info in infoList) {
         print(info.toString());

@@ -1,6 +1,5 @@
 import 'package:ant_smartphone_addiction_app/select_app.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 
 class TimeSlotScreen extends StatefulWidget {
   @override

@@ -1,6 +1,8 @@
 import 'dart:ui';
 
+import 'package:ant_smartphone_addiction_app/select_contact.dart';
 import 'package:ant_smartphone_addiction_app/time_slot.dart';
+import 'package:ant_smartphone_addiction_app/white_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
@@ -15,12 +17,9 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  Key? _key;
   bool on = false;
 
   bool _darkMode = false;
-
-  final GlobalKey<ScaffoldState> _scaffoldKey = new GlobalKey<ScaffoldState>();
 
   TextEditingController selectDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
@@ -42,15 +41,14 @@ class _HomeScreenState extends State<HomeScreen> {
         permission != PermissionStatus.denied) {
       final Map<Permission, PermissionStatus> permissionStatus =
           await [Permission.contacts].request();
-      return permissionStatus[Permission.contacts] ??
-          PermissionStatus.undetermined;
+      return permissionStatus[Permission.contacts] ?? PermissionStatus.limited;
     } else {
       return permission;
     }
   }
 
-  _automaticNotification () {
-    // TODO set  automa tic notofication in every d ay 
+  _automaticNotification() {
+    // TODO set  automa tic notofication in every d ay
   }
 
   _add_CalendarEvent_Dialog(BuildContext context) {
@@ -238,7 +236,7 @@ class _HomeScreenState extends State<HomeScreen> {
         // 'com.example.facebook' // facebook
         // 'com.facebook.android' // facebook
 
-    'com.twitter.android', // twitter
+        'com.twitter.android', // twitter
     'com.zhiliaoapp.musically', // ticktok
     'com.whatsapp', // whatsapp
   ];
@@ -260,6 +258,33 @@ class _HomeScreenState extends State<HomeScreen> {
     return [];
   }
 
+  final TextEditingController textEditingController = TextEditingController();
+
+  showChangeSMSDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Change SMS Content'),
+          content: TextField(
+            controller: textEditingController,
+          ),
+          actions: [
+            ElevatedButton(
+              onPressed: () {
+                String enteredText = textEditingController.text;
+                // Perform actions with enteredText
+                textEditingController.clear();
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text('Submit'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -277,14 +302,21 @@ class _HomeScreenState extends State<HomeScreen> {
                 IconButton(
                     icon: Icon(Icons.menu),
                     onPressed: () => Scaffold.of(context).openDrawer())),
-
-        // actions: [
-        //    Builder(builder: (context) => // Ensure Scaffold is in context
-        //       IconButton(
-        //          icon: Icon(Icons.settings),
-        //          onPressed: () => Scaffold.of(context).openDrawer()
-        //    )),
-        // ],
+        actions: [
+          IconButton(
+            icon: Icon(Icons.notifications_outlined),
+            onPressed: () {
+              // Perform action for icon1
+            },
+          ),
+          IconButton(
+            icon: Icon(Icons.settings_outlined),
+            onPressed: () {
+              // Perform action for icon2
+              showChangeSMSDialog();
+            },
+          ),
+        ],
       ),
       drawer: Drawer(
         child: ListView(
@@ -308,11 +340,15 @@ class _HomeScreenState extends State<HomeScreen> {
             // ),
             ListTile(
               leading: Icon(
-                Icons.notifications_outlined,
+                Icons.person_outline,
               ),
-              title: const Text('Notifications'),
+              title: const Text('Contacts'),
               onTap: () {
                 Navigator.pop(context);
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => WhiteBoardScreen()));
               },
             ),
 
@@ -404,121 +440,105 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
       body: SafeArea(
-        child: Stack(
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisSize: MainAxisSize.min,
           children: [
-            Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              crossAxisAlignment: CrossAxisAlignment.start,
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+              child: Text(
+                'Quick Action',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            const Row(
+              // Number of columns in the grid
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 20),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        children: const [
-                          Text(
-                            "Good Morning,",
-                            style: TextStyle(
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold,
-                            ),
+                Card(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.web,
+                          size: 50,
+                        ), // Replace 'icon_name_3' with the desired icon
+                        SizedBox(height: 8),
+                        Text(
+                          'Block Site',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
                           ),
-                          SizedBox(
-                            height: 5,
-                          ),
-                          Text(
-                            "email@example.com",
-                            style: TextStyle(
-                              color: Colors.black38,
-                            ),
-                          ),
-                        ],
-                      ),
-                      Container(
-                        height: 50,
-                        width: 50,
-                        decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(15),
-                            color: Colors.blueAccent,
-                            image: const DecorationImage(
-                                image: AssetImage("assets/user1.jpg"),
-                                fit: BoxFit.cover)),
-                      ),
-                    ],
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(
-                      horizontal: 20.0, vertical: 20),
-                  child: Text(
-                    'My Social Media Apps',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                Card(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.app_blocking,
+                          size: 50,
+                        ), // Replace 'icon_name_3' with the desired icon
+                        SizedBox(height: 8),
+                        Text(
+                          'Block App',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                   ),
                 ),
-                Expanded(child: social_mediaComponent()),
-
-                // Expanded(
-                //   child: FutureBuilder<List<AppInfo>>(
-                //     future: InstalledApps.getInstalledApps(true, true),
-                //     builder: (BuildContext buildContext,
-                //         AsyncSnapshot<List<AppInfo>> snapshot) {
-                //       print(snapshot.data![0].packageName);
-                //       return snapshot.connectionState == ConnectionState.done
-                //           ? snapshot.hasData
-                //               ? ListView.builder(
-                //                   itemCount: snapshot.data!.length,
-                //                   itemBuilder: (context, index) {
-                //                     AppInfo app = snapshot.data![index];
-                //                     return Card(
-                //                       child: SwitchListTile(
-                //                         value: _darkMode,
-                //                         title: Text(app.name!),
-                //                         subtitle: Text(app.getVersionInfo()),
-                //                         secondary: Padding(
-                //                           padding: const EdgeInsets.all(9.0),
-                //                           child: CircleAvatar(
-                //                             backgroundColor: Colors.transparent,
-                //                             child: Image.memory(app.icon!),
-                //                           ),
-                //                         ),
-                //                         onChanged: (newValue) {
-                //                           setState(() {
-                //                             _darkMode = newValue;
-                //                           });
-                //                         },
-                //                         // visualDensity: VisualDensity.adaptivePlatformDensity,
-                //                         // switchType: SwitchType.material,
-                //                         activeColor: Colors.indigo,
-                //                       ),
-
-                //                       // child: ListTile(
-                //                       // leading: CircleAvatar(
-                //                       //   backgroundColor: Colors.transparent,
-                //                       //   child: Image.memory(app.icon!),
-                //                       // ),
-                //                       //   title: Text(app.name!),
-                //                       //   subtitle: Text(app.getVersionInfo()),
-                //                       //   // onTap: () =>
-                //                       //   //     InstalledApps.startApp(app.packageName!),
-                //                       //   onLongPress: () =>
-                //                       //       InstalledApps.openSettings(
-                //                       //           app.packageName!),
-                //                       // ),
-                //                     );
-                //                   },
-                //                 )
-                //               : Center(
-                //                   child: Text(
-                //                       "Error occurred while getting installed apps ...."))
-                //           : Center(child: Text("Getting installed apps ...."));
-                //     },
-                //   ),
-                // ),
+                Card(
+                  child: Padding(
+                    padding:
+                        EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Icon(
+                          Icons.av_timer,
+                          size: 50,
+                        ), // Replace 'icon_name_3' with the desired icon
+                        SizedBox(height: 8),
+                        Text(
+                          'Screen Time',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
               ],
             ),
+            Padding(
+              padding:
+                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+              child: Text(
+                'My Profile',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+              ),
+            ),
+            Expanded(child: social_mediaComponent()),
           ],
         ),
       ),
@@ -529,9 +549,9 @@ class _HomeScreenState extends State<HomeScreen> {
     if (app_list_data == null) {
       return Container(
         child: Center(child: Text('Loading...')),
-          // color: Colors.black,
-          // size: 50.0,
-          );
+        // color: Colors.black,
+        // size: 50.0,
+      );
     } else if (app_list_data != null && app_list_data?.length == 0) {
       // No Data
       return Column(children: [
@@ -542,45 +562,75 @@ class _HomeScreenState extends State<HomeScreen> {
         // )
       ]);
     } else {
-      return ListView.builder(
+      // return ListView.builder(
+      //   itemCount: app_list_data!.length,
+      //   itemBuilder: (context, index) {
+      //     AppInfo app = app_list_data![index];
+      //     return Card(
+      //       child: SwitchListTile(
+      //         value: _darkMode,
+      //         title: Text(app.name!),
+      //         subtitle: Text(app.getVersionInfo()),
+      //         secondary: Padding(
+      //           padding: const EdgeInsets.all(9.0),
+      //           child: CircleAvatar(
+      //             backgroundColor: Colors.transparent,
+      //             child: Image.memory(app.icon!),
+      //           ),
+      //         ),
+      //         onChanged: (newValue) {
+      //           setState(() {
+      //             _darkMode = newValue;
+      //           });
+      //         },
+      //         // visualDensity: VisualDensity.adaptivePlatformDensity,
+      //         // switchType: SwitchType.material,
+      //         activeColor: Colors.indigo,
+      //       ),
+
+      //       // child: ListTile(
+      //       // leading: CircleAvatar(
+      //       //   backgroundColor: Colors.transparent,
+      //       //   child: Image.memory(app.icon!),
+      //       // ),
+      //       //   title: Text(app.name!),
+      //       //   subtitle: Text(app.getVersionInfo()),
+      //       //   // onTap: () =>
+      //       //   //     InstalledApps.startApp(app.packageName!),
+      //       //   onLongPress: () =>
+      //       //       InstalledApps.openSettings(
+      //       //           app.packageName!),
+      //       // ),
+      //     );
+      //   },
+      // );
+
+      return GridView.builder(
+        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+          crossAxisCount: 2, // Number of columns in the grid
+          childAspectRatio: 1.5, // Adjust the aspect ratio as needed
+        ),
         itemCount: app_list_data!.length,
         itemBuilder: (context, index) {
           AppInfo app = app_list_data![index];
-          return Card(
-            child: SwitchListTile(
-              value: _darkMode,
-              title: Text(app.name!),
-              subtitle: Text(app.getVersionInfo()),
-              secondary: Padding(
-                padding: const EdgeInsets.all(9.0),
-                child: CircleAvatar(
-                  backgroundColor: Colors.transparent,
-                  child: Image.memory(app.icon!),
-                ),
+          return InkWell(
+            onTap: () {
+              print(index);
+            },
+            child: Card(
+              child: Column(
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.all(9.0),
+                    child: CircleAvatar(
+                      backgroundColor: Colors.transparent,
+                      child: Image.memory(app.icon!),
+                    ),
+                  ),
+                  Text(app.name!),
+                ],
               ),
-              onChanged: (newValue) {
-                setState(() {
-                  _darkMode = newValue;
-                });
-              },
-              // visualDensity: VisualDensity.adaptivePlatformDensity,
-              // switchType: SwitchType.material,
-              activeColor: Colors.indigo,
             ),
-
-            // child: ListTile(
-            // leading: CircleAvatar(
-            //   backgroundColor: Colors.transparent,
-            //   child: Image.memory(app.icon!),
-            // ),
-            //   title: Text(app.name!),
-            //   subtitle: Text(app.getVersionInfo()),
-            //   // onTap: () =>
-            //   //     InstalledApps.startApp(app.packageName!),
-            //   onLongPress: () =>
-            //       InstalledApps.openSettings(
-            //           app.packageName!),
-            // ),
           );
         },
       );
