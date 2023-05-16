@@ -165,7 +165,7 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
 
               items: <String>[
                 '15 Minutes',
-                '30 Minutes',
+                '30 Minutes', 
                 '1 Hour',
                 '3 Hour',
                 '6 Hour',
