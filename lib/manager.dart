@@ -24,28 +24,28 @@ class SilentTime {
 
   static Future<List> querySilent_time() async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    var pref_silent_time_data =
+    var prefSilentTimeData =
         sharedPreferences.getString(SILENT_TIME_PREF_KEY);
-    if (pref_silent_time_data != null) {
-      return json.decode(pref_silent_time_data);
+    if (prefSilentTimeData != null) {
+      return json.decode(prefSilentTimeData);
     }
 
     return [];
   }
 
-  static void insertSilentTime(silent_data) async {
+  static void insertSilentTime(silentData) async {
     SharedPreferences sharedPreferences = await SharedPreferences.getInstance();
-    sharedPreferences.setString(SILENT_TIME_PREF_KEY, json.encode(silent_data));
+    sharedPreferences.setString(SILENT_TIME_PREF_KEY, json.encode(silentData));
   }
 
   static Future<List<SilentTime>> allSilentTimes() async {
-    List<SilentTime> silentTime_list = [];
-    List silent_time_data = await SilentTime.querySilent_time();
-    for (var data in silent_time_data) {
+    List<SilentTime> silenttimeList = [];
+    List silentTimeData = await SilentTime.querySilent_time();
+    for (var data in silentTimeData) {
       // print("From the SharedPreferences");
       // print(cart['quantity'].runtimeType);
       // print(cart['quantity']);
-      silentTime_list.add(SilentTime(
+      silenttimeList.add(SilentTime(
         data["id"],
         data["time"],
         data["silent_name"],
@@ -55,11 +55,11 @@ class SilentTime {
       ));
     }
 
-    return silentTime_list;
+    return silenttimeList;
   }
 
-  static isSilentTime(String id, List sells_cart_data) {
-    for (var sell_cart in sells_cart_data) {
+  static isSilentTime(String id, List sellsCartData) {
+    for (var sell_cart in sellsCartData) {
       if (sell_cart['id'] == id) {
         return true;
       }
@@ -72,32 +72,32 @@ class SilentTime {
   }
 
   static remove(String id) async {
-    List silentTime_list = await SilentTime.querySilent_time();
-    for (int i = 0; i < silentTime_list.length; i++) {
-      if (silentTime_list[i]['id'] == id) {
-        silentTime_list.removeAt(i);
+    List silenttimeList = await SilentTime.querySilent_time();
+    for (int i = 0; i < silenttimeList.length; i++) {
+      if (silenttimeList[i]['id'] == id) {
+        silenttimeList.removeAt(i);
       }
     }
-    SilentTime.insertSilentTime(silentTime_list);
+    SilentTime.insertSilentTime(silenttimeList);
   }
 
-  static addToSilentTime(time, silent_name, daily, weekly, end_time_interval) async {
-    List silent_time_data = await SilentTime.querySilent_time();
+  static addToSilentTime(time, silentName, daily, weekly, endTimeInterval) async {
+    List silentTimeData = await SilentTime.querySilent_time();
     String id = const Uuid().v4();
-    if (SilentTime.isSilentTime(id, silent_time_data) == false) {
+    if (SilentTime.isSilentTime(id, silentTimeData) == false) {
       print("Is already");
       // print('Adding');
       // print(quantity);
-      silent_time_data.add({
+      silentTimeData.add({
         "id": id,
         "time": time,
-        "silent_name": silent_name,
+        "silent_name": silentName,
         "daily": daily,
         "weekly": weekly,
-        "end_time_interval": end_time_interval,
+        "end_time_interval": endTimeInterval,
       });
 
-      SilentTime.insertSilentTime(silent_time_data);
+      SilentTime.insertSilentTime(silentTimeData);
     }
   }
 }

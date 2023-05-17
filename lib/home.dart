@@ -1,17 +1,16 @@
-import 'dart:ui';
 
-import 'package:ant_smartphone_addiction_app/select_contact.dart';
 import 'package:ant_smartphone_addiction_app/time_slot.dart';
 import 'package:ant_smartphone_addiction_app/white_list.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 class HomeScreen extends StatefulWidget {
+  const HomeScreen({super.key});
+
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
@@ -19,7 +18,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool on = false;
 
-  bool _darkMode = false;
 
   TextEditingController selectDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
@@ -57,14 +55,14 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context) {
           return AlertDialog(
             scrollable: true,
-            title: Text('Add Silent Event'),
+            title: const Text('Add Silent Event'),
             content: Column(
               children: [
                 TextField(
                   // controller: startDateController,
                   style: Theme.of(context).textTheme.bodyMedium,
 
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     // prefixIcon: const Icon(
                     //   Icons.home,
                     //   color: Colors.grey,
@@ -111,7 +109,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 TextFormField(
                   minLines: 5,
                   maxLines: 7,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     // prefixIcon: const Icon(
                     //   Icons.home,
                     //   color: Colors.grey,
@@ -151,7 +149,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
                 MaterialButton(
                   elevation: 0,
-                  color: Color(0xFF44B6AF),
+                  color: const Color(0xFF44B6AF),
                   height: 50,
                   minWidth: 500,
                   shape: RoundedRectangleBorder(
@@ -162,7 +160,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   },
                   child: Text(
                     'Save',
-                    style: Theme.of(context).textTheme.button,
+                    style: Theme.of(context).textTheme.labelLarge,
                   ),
                 ),
               ],
@@ -176,12 +174,12 @@ class _HomeScreenState extends State<HomeScreen> {
         context: context,
         builder: (context) {
           return AlertDialog(
-            title: Text('Clear Settings'),
+            title: const Text('Clear Settings'),
             content: Column(
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 Container(
-                  child: Text(
+                  child: const Text(
                     "Are you sure you want to clear all Settings",
                     textAlign: TextAlign.center,
                     style: TextStyle(
@@ -190,7 +188,7 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                   ),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 15,
                 ),
                 Row(
@@ -207,9 +205,9 @@ class _HomeScreenState extends State<HomeScreen> {
                             //     MaterialPageRoute(
                             //         builder: (context) => LoginScreen()));
                           },
-                          child: Text('Yes')),
+                          child: const Text('Yes')),
 
-                      SizedBox(
+                      const SizedBox(
                         width: 30,
                       ),
 
@@ -217,7 +215,7 @@ class _HomeScreenState extends State<HomeScreen> {
                           onTap: () {
                             Navigator.of(context).pop();
                           },
-                          child: Text('No')),
+                          child: const Text('No')),
                       // onPressed: () {
                       //   Navigator.of(context).pop();
                       // }
@@ -242,16 +240,16 @@ class _HomeScreenState extends State<HomeScreen> {
   ];
 
   fetchSocialMediaOnlysData() async {
-    List<AppInfo> _app_list_items = [];
+    List<AppInfo> appListItems = [];
 
     for (AppInfo info in await InstalledApps.getInstalledApps(true, true)) {
       if (_app_packageNames.contains(info.packageName)) {
-        _app_list_items.add(info);
+        appListItems.add(info);
       }
     }
 
     setState(() {
-      app_list_data = _app_list_items;
+      app_list_data = appListItems;
       // next = body['next'];
     });
 
@@ -265,19 +263,18 @@ class _HomeScreenState extends State<HomeScreen> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Change SMS Content'),
+          title: const Text('Change SMS Content'),
           content: TextField(
             controller: textEditingController,
           ),
           actions: [
             ElevatedButton(
               onPressed: () {
-                String enteredText = textEditingController.text;
                 // Perform actions with enteredText
                 textEditingController.clear();
                 Navigator.of(context).pop(); // Close the dialog
               },
-              child: Text('Submit'),
+              child: const Text('Submit'),
             ),
           ],
         );
@@ -300,17 +297,17 @@ class _HomeScreenState extends State<HomeScreen> {
         leading: Builder(
             builder: (context) => // Ensure Scaffold is in context
                 IconButton(
-                    icon: Icon(Icons.menu),
+                    icon: const Icon(Icons.menu),
                     onPressed: () => Scaffold.of(context).openDrawer())),
         actions: [
           IconButton(
-            icon: Icon(Icons.notifications_outlined),
+            icon: const Icon(Icons.notifications_outlined),
             onPressed: () {
               // Perform action for icon1
             },
           ),
           IconButton(
-            icon: Icon(Icons.settings_outlined),
+            icon: const Icon(Icons.settings_outlined),
             onPressed: () {
               // Perform action for icon2
               showChangeSMSDialog();
@@ -339,7 +336,7 @@ class _HomeScreenState extends State<HomeScreen> {
             //   },
             // ),
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.person_outline,
               ),
               title: const Text('Contacts'),
@@ -348,24 +345,24 @@ class _HomeScreenState extends State<HomeScreen> {
                 Navigator.push(
                     context,
                     MaterialPageRoute(
-                        builder: (context) => WhiteBoardScreen()));
+                        builder: (context) => const WhiteBoardScreen()));
               },
             ),
 
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.av_timer,
               ),
               title: const Text('Time Slot'),
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => TimeSlotScreen()));
+                    MaterialPageRoute(builder: (context) => const TimeSlotScreen()));
               },
             ),
 
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.assessment_outlined,
               ),
               title: const Text('App Usage'),
@@ -383,12 +380,12 @@ class _HomeScreenState extends State<HomeScreen> {
                   showDialog(
                       context: context,
                       builder: (BuildContext context) => CupertinoAlertDialog(
-                            title: Text('Permissions error'),
-                            content: Text('Please enable contacts access '
+                            title: const Text('Permissions error'),
+                            content: const Text('Please enable contacts access '
                                 'permission in system settings'),
                             actions: <Widget>[
                               CupertinoDialogAction(
-                                child: Text('OK'),
+                                child: const Text('OK'),
                                 onPressed: () => Navigator.of(context).pop(),
                               )
                             ],
@@ -398,7 +395,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.settings_outlined,
               ),
               title: const Text('Settings'),
@@ -408,7 +405,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.share_outlined,
               ),
               title: const Text('Share'),
@@ -418,7 +415,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.help,
               ),
               title: const Text('`Dark Mode'),
@@ -428,7 +425,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
 
             ListTile(
-              leading: Icon(
+              leading: const Icon(
                 Icons.rate_review_outlined,
               ),
               title: const Text('Feedback'),
@@ -530,9 +527,9 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ],
             ),
-            Padding(
+            const Padding(
               padding:
-                  const EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
               child: Text(
                 'My Profile',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -548,11 +545,11 @@ class _HomeScreenState extends State<HomeScreen> {
   social_mediaComponent() {
     if (app_list_data == null) {
       return Container(
-        child: Center(child: Text('Loading...')),
+        child: const Center(child: Text('Loading...')),
         // color: Colors.black,
         // size: 50.0,
       );
-    } else if (app_list_data != null && app_list_data?.length == 0) {
+    } else if (app_list_data != null && app_list_data!.isEmpty) {
       // No Data
       return Column(children: [
         Image.asset("assets/images/no_data.gif"),
@@ -606,7 +603,7 @@ class _HomeScreenState extends State<HomeScreen> {
       // );
 
       return GridView.builder(
-        gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
+        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: 2, // Number of columns in the grid
           childAspectRatio: 1.5, // Adjust the aspect ratio as needed
         ),

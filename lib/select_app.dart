@@ -6,6 +6,8 @@ import 'package:installed_apps/installed_apps.dart';
 import 'package:usage_stats/usage_stats.dart';
 
 class SelectAppScreen extends StatefulWidget {
+  const SelectAppScreen({super.key});
+
   @override
   State<SelectAppScreen> createState() => _SelectAppScreenState();
 }
@@ -37,16 +39,16 @@ class _SelectAppScreenState extends State<SelectAppScreen> {
   ];
 
   fetchSocialMediaOnlysData() async {
-    List<AppInfo> _app_list_items = [];
+    List<AppInfo> appListItems = [];
 
     for (AppInfo info in await InstalledApps.getInstalledApps(true, true)) {
       if (_app_packageNames.contains(info.packageName)) {
-        _app_list_items.add(info);
+        appListItems.add(info);
       }
     }
 
     setState(() {
-      app_list_data = _app_list_items;
+      app_list_data = appListItems;
       // next = body['next'];
     });
 
@@ -60,16 +62,11 @@ class _SelectAppScreenState extends State<SelectAppScreen> {
     try {
       UsageStats.grantUsagePermission();
 
-      DateTime endDate = new DateTime.now();
-      DateTime startDate = endDate.subtract(Duration(days: 1));
+      DateTime endDate = DateTime.now();
+      DateTime startDate = endDate.subtract(const Duration(days: 1));
 
       List<EventUsageInfo> queryEvents =
           await UsageStats.queryEvents(startDate, endDate);
-      List<NetworkInfo> networkInfos = await UsageStats.queryNetworkUsageStats(
-        startDate,
-        endDate,
-        networkType: NetworkType.all,
-      );
 
 
       List<UsageInfo> t = await UsageStats.queryUsageStats(startDate, endDate);
@@ -92,7 +89,7 @@ class _SelectAppScreenState extends State<SelectAppScreen> {
         }
       }
 
-      this.setState(() {
+      setState(() {
         events = queryEvents.reversed.toList();
       });
     } catch (err) {
@@ -103,7 +100,7 @@ class _SelectAppScreenState extends State<SelectAppScreen> {
   void getUsageStats() async {
     try {
       DateTime endDate = DateTime.now();
-      DateTime startDate = endDate.subtract(Duration(hours: 1));
+      DateTime startDate = endDate.subtract(const Duration(hours: 1));
       List<AppUsageInfo> infoList =
           await AppUsage().getAppUsage(startDate, endDate);
 
@@ -122,10 +119,10 @@ class _SelectAppScreenState extends State<SelectAppScreen> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.black,
-        title: Text('Select App', style: TextStyle(color: Colors.black)),
+        title: const Text('Select App', style: TextStyle(color: Colors.black)),
         actions: <Widget>[
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.more_vert,
               color: Colors.black,
             ),
@@ -238,11 +235,11 @@ class _SelectAppScreenState extends State<SelectAppScreen> {
   social_mediaComponent() {
     if (app_list_data == null) {
       return Container(
-        child: Center(child: Text('Loading...')),
+        child: const Center(child: Text('Loading...')),
         // color: Colors.black,
         // size: 50.0,
       );
-    } else if (app_list_data != null && app_list_data?.length == 0) {
+    } else if (app_list_data != null && app_list_data!.isEmpty) {
       // No Data
       return Column(children: [
         Image.asset("assets/images/no_data.gif"),

@@ -1,7 +1,6 @@
 // ignore_for_file: must_be_immutable
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_time_picker_spinner/flutter_time_picker_spinner.dart';
 
 class Select_TimeScreen extends StatefulWidget {
@@ -9,7 +8,7 @@ class Select_TimeScreen extends StatefulWidget {
 
   Select_TimeScreen(
     
-    this.packageName,
+    this.packageName, {super.key}
   );
   @override
   State<Select_TimeScreen> createState() => _Select_TimeScreenState();
@@ -28,7 +27,7 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.black,
-        title: Text('Select Time', style: TextStyle(color: Colors.black)),
+        title: const Text('Select Time', style: TextStyle(color: Colors.black)),
         // actions: <Widget>[
         //   IconButton(
         //     icon: Icon(
@@ -94,18 +93,18 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
 
           SwitchListTile(
             value: _dailyMode,
-            title: Text(
+            title: const Text(
               'Everyday',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            subtitle: Text(
+            subtitle: const Text(
               'Silence 1 hr On time setted',
             ),
-            secondary: Padding(
-              padding: const EdgeInsets.all(9.0),
+            secondary: const Padding(
+              padding: EdgeInsets.all(9.0),
               child: Icon(Icons.wifi),
             ),
             onChanged: (newValue) {
@@ -120,18 +119,18 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
 
           SwitchListTile(
             value: _dailyMode,
-            title: Text(
+            title: const Text(
               'EveryWeek',
               style: TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
             ),
-            subtitle: Text(
+            subtitle: const Text(
               'Silence 1 hr On time setted',
             ),
-            secondary: Padding(
-              padding: const EdgeInsets.all(9.0),
+            secondary: const Padding(
+              padding: EdgeInsets.all(9.0),
               child: Icon(Icons.wifi),
             ),
             onChanged: (newValue) {
@@ -147,7 +146,7 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
           Container(
             // padding: const EdgeInsets.all(0.0),
             padding:
-                EdgeInsets.only(left: 10.0, right: 10.0, top: 0, bottom: 0),
+                const EdgeInsets.only(left: 10.0, right: 10.0, top: 0, bottom: 0),
             // decoration: BoxDecoration(
             //     border: Border.all(color: Colors.grey),
             //     borderRadius: BorderRadius.circular(12)),
@@ -156,13 +155,13 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
               //elevation: 5,
               // style: TextStyle(color: Colors.black),
 
-              hint: Text('Select End Time Interval'),
+              hint: const Text('Select End Time Interval'),
               dropdownColor: Colors.white,
-              icon: Icon(Icons.arrow_drop_down),
+              icon: const Icon(Icons.arrow_drop_down),
               iconSize: 36,
               isExpanded: true,
-              underline: SizedBox(),
-              style: TextStyle(color: Colors.black, fontSize: 15),
+              underline: const SizedBox(),
+              style: const TextStyle(color: Colors.black, fontSize: 15),
 
               items: <String>[
                 '15 Minutes',
@@ -215,12 +214,12 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
       bottomNavigationBar: Container(
         // height: 100,
         // color: Colors.white,
-        padding: EdgeInsets.all(20),
+        padding: const EdgeInsets.all(20),
         // margin: EdgeInsets.only(bottom: 15),
-        decoration: BoxDecoration(
+        decoration: const BoxDecoration(
           color: Colors.white,
           // borderRadius: BorderRadius.circular(20),
-          boxShadow: const [
+          boxShadow: [
             BoxShadow(
               color: Color(0x40000000),
               spreadRadius: -4,
@@ -229,7 +228,7 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
             ),
           ],
         ),
-        child: Padding(
+        child: const Padding(
           padding: EdgeInsets.all(20.0),
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceAround,
@@ -245,7 +244,7 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
 
   _timeSpinnnerView() {
     return Container(
-      padding: EdgeInsets.only(top: 50),
+      padding: const EdgeInsets.only(top: 50),
       child: Column(
         children: <Widget>[
           //            hourMinute12H(),
@@ -253,14 +252,10 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
           //            hourMinuteSecond(),
           //            hourMinute12HCustomStyle(),
           Container(
-            margin: EdgeInsets.symmetric(vertical: 50),
+            margin: const EdgeInsets.symmetric(vertical: 50),
             child: Text(
-              _dateTime.hour.toString().padLeft(2, '0') +
-                  ':' +
-                  _dateTime.minute.toString().padLeft(2, '0') +
-                  ':' +
-                  _dateTime.second.toString().padLeft(2, '0'),
-              style: TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              '${_dateTime.hour.toString().padLeft(2, '0')}:${_dateTime.minute.toString().padLeft(2, '0')}:${_dateTime.second.toString().padLeft(2, '0')}',
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
             ),
           ),
         ],
@@ -270,7 +265,7 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
 
   /// SAMPLE
   Widget hourMinute12H() {
-    return new TimePickerSpinner(
+    return TimePickerSpinner(
       is24HourMode: false,
       onTimeChange: (time) {
         setState(() {
@@ -281,7 +276,7 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
   }
 
   Widget hourMinuteSecond() {
-    return new TimePickerSpinner(
+    return TimePickerSpinner(
       isShowSeconds: true,
       onTimeChange: (time) {
         setState(() {
@@ -292,7 +287,7 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
   }
 
   Widget hourMinute15Interval() {
-    return new TimePickerSpinner(
+    return TimePickerSpinner(
       spacing: 40,
       minutesInterval: 1,
       onTimeChange: (time) {
@@ -304,10 +299,10 @@ class _Select_TimeScreenState extends State<Select_TimeScreen> {
   }
 
   Widget hourMinute12HCustomStyle() {
-    return new TimePickerSpinner(
+    return TimePickerSpinner(
       is24HourMode: false,
-      normalTextStyle: TextStyle(fontSize: 24, color: Colors.deepOrange),
-      highlightedTextStyle: TextStyle(fontSize: 24, color: Colors.yellow),
+      normalTextStyle: const TextStyle(fontSize: 24, color: Colors.deepOrange),
+      highlightedTextStyle: const TextStyle(fontSize: 24, color: Colors.yellow),
       spacing: 50,
       itemHeight: 80,
       isForce2Digits: true,

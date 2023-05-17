@@ -4,14 +4,13 @@ import 'dart:convert';
 
 import 'package:contacts_service/contacts_service.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SelectContactScreen extends StatefulWidget {
   String type;
 
   SelectContactScreen(
-    this.type,
+    this.type, {super.key}
   );
 
   @override
@@ -32,8 +31,8 @@ class _SelectContactScreenState extends State<SelectContactScreen> {
     SharedPreferences localstorage = await SharedPreferences.getInstance();
     var data = localstorage.getString('white_list');
     if (data != null) {
-      List my_list = json.decode(data);
-      for (var i in my_list) {
+      List myList = json.decode(data);
+      for (var i in myList) {
         if (i == identifier) return true;
       }
       return false;
@@ -46,21 +45,21 @@ class _SelectContactScreenState extends State<SelectContactScreen> {
     //page, so we can just retrieve it
 
     final Iterable<Contact> contacts = await ContactsService.getContacts();
-    List<MyContact> _my_contacts = [];
+    List<MyContact> myContacts = [];
     print(contacts.toList()[4].identifier);
     print(contacts.toList()[5].identifier);
 
     for (Contact contact in contacts) {
-      bool _is_checked = widget.type == MyContact.WHITE_LIST
+      bool isChecked = widget.type == MyContact.WHITE_LIST
           ? await MyContact.isWhiteList(contact.identifier!)
           : await MyContact.isBlackList(contact.identifier!);
           
-      _my_contacts.add(MyContact(_is_checked, contact));
+      myContacts.add(MyContact(isChecked, contact));
     }
 
     setState(() {
       _contacts = contacts;
-      my_contacts = _my_contacts;
+      myContacts = myContacts;
     });
   }
 
@@ -68,7 +67,7 @@ class _SelectContactScreenState extends State<SelectContactScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: (Text('Select Contacts')),
+        title: (const Text('Select Contacts')),
         foregroundColor: Colors.black,
         backgroundColor: Colors.white,
         elevation: 0,
@@ -89,8 +88,8 @@ class _SelectContactScreenState extends State<SelectContactScreen> {
                           backgroundImage: MemoryImage(contact.contact.avatar!),
                         )
                       : CircleAvatar(
-                          child: Text(contact!.contact.initials()),
                           backgroundColor: Colors.blue,
+                          child: Text(contact!.contact.initials()),
                         ),
                   title: Text(contact.contact.displayName ?? ''),
                   //This can be further expanded to showing contacts detail
@@ -121,7 +120,7 @@ class _SelectContactScreenState extends State<SelectContactScreen> {
                 );
               },
             )
-          : Center(child: const CircularProgressIndicator()),
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }
@@ -138,8 +137,8 @@ class MyContact {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var data = localStorage.getString(WHITE_LIST);
     if (data != null) {
-      List my_list = json.decode(data);
-      return my_list.contains(identifier);
+      List myList = json.decode(data);
+      return myList.contains(identifier);
     }
     return false;
   }
@@ -148,8 +147,8 @@ class MyContact {
     SharedPreferences localStorage = await SharedPreferences.getInstance();
     var data = localStorage.getString(BLACK_LIST);
     if (data != null) {
-      List my_list = json.decode(data);
-      return my_list.contains(identifier);
+      List myList = json.decode(data);
+      return myList.contains(identifier);
     }
     return false;
   }
@@ -157,18 +156,18 @@ class MyContact {
   static Future<bool> addToWhiteList(String identifier) async {
     SharedPreferences localstorage = await SharedPreferences.getInstance();
     var data = localstorage.getString(WHITE_LIST);
-    List my_list = data != null ? json.decode(data) : [];
-    my_list.add(identifier);
-    MyContact.save(my_list, WHITE_LIST);
+    List myList = data != null ? json.decode(data) : [];
+    myList.add(identifier);
+    MyContact.save(myList, WHITE_LIST);
     return true;
   }
 
   static Future<bool> addToBlackList(String identifier) async {
     SharedPreferences localstorage = await SharedPreferences.getInstance();
     var data = localstorage.getString(BLACK_LIST);
-    List my_list = data != null ? json.decode(data) : [];
-    my_list.add(identifier);
-    MyContact.save(my_list, BLACK_LIST);
+    List myList = data != null ? json.decode(data) : [];
+    myList.add(identifier);
+    MyContact.save(myList, BLACK_LIST);
     return true;
   }
 
@@ -176,9 +175,9 @@ class MyContact {
     SharedPreferences localstorage = await SharedPreferences.getInstance();
     var data = localstorage.getString(BLACK_LIST);
     if (data != null) {
-      List my_list = json.decode(data);
-      my_list.remove(identifier);
-      MyContact.save(my_list, BLACK_LIST);
+      List myList = json.decode(data);
+      myList.remove(identifier);
+      MyContact.save(myList, BLACK_LIST);
       return true;
     }
     return false;
@@ -188,19 +187,19 @@ class MyContact {
     SharedPreferences localstorage = await SharedPreferences.getInstance();
     var data = localstorage.getString(WHITE_LIST);
     if (data != null) {
-      List my_list = json.decode(data);
-      my_list.remove(identifier);
-      MyContact.save(my_list, WHITE_LIST);
+      List myList = json.decode(data);
+      myList.remove(identifier);
+      MyContact.save(myList, WHITE_LIST);
       return true;
     }
     return false;
   }
 
-  static Future<bool> save(List list, String save_as) async {
+  static Future<bool> save(List list, String saveAs) async {
     SharedPreferences localstorage = await SharedPreferences.getInstance();
     print('Saving');
     print(list);
-    localstorage.setString(save_as, json.encode(list));
+    localstorage.setString(saveAs, json.encode(list));
     return true;
   }
 }

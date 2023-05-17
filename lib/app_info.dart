@@ -3,10 +3,12 @@ import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart';
 
 class AppInfoScreen extends StatelessWidget {
+  const AppInfoScreen({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: Text("App Info")),
+      appBar: AppBar(title: const Text("App Info")),
       body: FutureBuilder<AppInfo>(
         future: InstalledApps.getAppInfo("com.google.android.gm"),
         builder: (BuildContext buildContext, AsyncSnapshot<AppInfo> snapshot) {
@@ -18,7 +20,7 @@ class AppInfoScreen extends StatelessWidget {
                           Image.memory(snapshot.data!.icon!),
                           Text(
                             snapshot.data!.name!,
-                            style: TextStyle(
+                            style: const TextStyle(
                               fontWeight: FontWeight.bold,
                               fontSize: 40,
                             ),
@@ -27,8 +29,8 @@ class AppInfoScreen extends StatelessWidget {
                         ],
                       ),
                     )
-                  : Center(child: Text("Error while getting app info ...."))
-              : Center(child: Text("Getting app info ...."));
+                  : const Center(child: Text("Error while getting app info ...."))
+              : const Center(child: Text("Getting app info ...."));
         },
       ),
     );

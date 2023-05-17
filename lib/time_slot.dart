@@ -2,6 +2,8 @@ import 'package:ant_smartphone_addiction_app/select_app.dart';
 import 'package:flutter/material.dart';
 
 class TimeSlotScreen extends StatefulWidget {
+  const TimeSlotScreen({super.key});
+
   @override
   State<TimeSlotScreen> createState() => _TimeSlotScreenState();
 }
@@ -18,10 +20,10 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
         elevation: 0,
         backgroundColor: Colors.transparent,
         foregroundColor: Colors.black,
-        title: Text('My Blocked Apps', style: TextStyle(color: Colors.black)),
+        title: const Text('My Blocked Apps', style: TextStyle(color: Colors.black)),
         actions: <Widget>[
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.add,
               color: Colors.black,
             ),
@@ -30,7 +32,7 @@ class _TimeSlotScreenState extends State<TimeSlotScreen> {
               // do something
 
               Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => SelectAppScreen()));
+                      MaterialPageRoute(builder: (context) => const SelectAppScreen()));
 
 
               // final PermissionStatus permissionStatus =

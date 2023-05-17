@@ -1,7 +1,5 @@
 import 'package:ant_smartphone_addiction_app/select_contact.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 import 'dart:convert';
@@ -10,6 +8,8 @@ import 'package:contacts_service/contacts_service.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class WhiteBoardScreen extends StatefulWidget {
+  const WhiteBoardScreen({super.key});
+
   @override
   State<WhiteBoardScreen> createState() => _WhiteBoardScreenState();
 }
@@ -27,8 +27,8 @@ class _WhiteBoardScreenState extends State<WhiteBoardScreen> {
     SharedPreferences localstorage = await SharedPreferences.getInstance();
     var data = localstorage.getString('white_list');
     if (data != null) {
-      List my_list = json.decode(data);
-      for (var i in my_list) {
+      List myList = json.decode(data);
+      for (var i in myList) {
         if (i == identifier) return true;
       }
       return false;
@@ -41,20 +41,20 @@ class _WhiteBoardScreenState extends State<WhiteBoardScreen> {
     //page, so we can just retrieve it
 
     final Iterable<Contact> contacts = await ContactsService.getContacts();
-    List<MyContact> _my_contacts = [];
+    List<MyContact> myContacts = [];
     print(contacts.toList()[4].identifier);
     print(contacts.toList()[5].identifier);
 
     for (Contact contact in contacts) {
-      bool _is_checked = await MyContact.isWhiteList(contact.identifier!);
-      if(_is_checked) {
-        _my_contacts.add(MyContact(_is_checked, contact));
+      bool isChecked = await MyContact.isWhiteList(contact.identifier!);
+      if(isChecked) {
+        myContacts.add(MyContact(isChecked, contact));
       }
 
     }
 
     setState(() {
-      my_contacts = _my_contacts;
+      myContacts = myContacts;
     });
   }
 
@@ -92,8 +92,8 @@ class _WhiteBoardScreenState extends State<WhiteBoardScreen> {
                               backgroundImage: MemoryImage(contact.avatar!),
                             )
                           : CircleAvatar(
-                              child: Text(contact!.initials()),
                               backgroundColor: Colors.blue,
+                              child: Text(contact!.initials()),
                             ),
                   title: Text(contact.displayName ?? ''),
                   //This can be further expanded to showing contacts detail
@@ -101,7 +101,7 @@ class _WhiteBoardScreenState extends State<WhiteBoardScreen> {
                 );
               },
             )
-          : Center(child: const CircularProgressIndicator()),
+          : const Center(child: CircularProgressIndicator()),
 
       floatingActionButton: FloatingActionButton.extended(
         onPressed: () {
@@ -115,7 +115,7 @@ class _WhiteBoardScreenState extends State<WhiteBoardScreen> {
         },
         label: const Text('Add'),
         icon: const Icon(Icons.add),
-        backgroundColor: Color(0xFF44B6AF),
+        backgroundColor: const Color(0xFF44B6AF),
       ),
     );
   }
