@@ -54,6 +54,10 @@ dependencies:
   flutter_contacts:
   contacts_service: ^0.6.3
 
+  device_apps: ^2.2.0
+  
+
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

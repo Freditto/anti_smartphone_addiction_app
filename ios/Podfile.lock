@@ -1,27 +1,45 @@
 PODS:
+  - activity_recognition_flutter (0.0.1):
+    - Flutter
+  - contacts_service (0.2.2):
+    - Flutter
   - Flutter (1.0.0)
-  - "permission_handler (5.1.0+2)":
+  - flutter_contacts (0.0.1):
+    - Flutter
+  - permission_handler_apple (9.0.4):
     - Flutter
   - shared_preferences_foundation (0.0.1):
     - Flutter
     - FlutterMacOS
 
 DEPENDENCIES:
+  - activity_recognition_flutter (from `.symlinks/plugins/activity_recognition_flutter/ios`)
+  - contacts_service (from `.symlinks/plugins/contacts_service/ios`)
   - Flutter (from `Flutter`)
-  - permission_handler (from `.symlinks/plugins/permission_handler/ios`)
-  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/ios`)
+  - flutter_contacts (from `.symlinks/plugins/flutter_contacts/ios`)
+  - permission_handler_apple (from `.symlinks/plugins/permission_handler_apple/ios`)
+  - shared_preferences_foundation (from `.symlinks/plugins/shared_preferences_foundation/darwin`)
 
 EXTERNAL SOURCES:
+  activity_recognition_flutter:
+    :path: ".symlinks/plugins/activity_recognition_flutter/ios"
+  contacts_service:
+    :path: ".symlinks/plugins/contacts_service/ios"
   Flutter:
     :path: Flutter
-  permission_handler:
-    :path: ".symlinks/plugins/permission_handler/ios"
+  flutter_contacts:
+    :path: ".symlinks/plugins/flutter_contacts/ios"
+  permission_handler_apple:
+    :path: ".symlinks/plugins/permission_handler_apple/ios"
   shared_preferences_foundation:
-    :path: ".symlinks/plugins/shared_preferences_foundation/ios"
+    :path: ".symlinks/plugins/shared_preferences_foundation/darwin"
 
 SPEC CHECKSUMS:
+  activity_recognition_flutter: fd735b9927d94b9a7c1165cc9b2e430034d8e230
+  contacts_service: 849e1f84281804c8bfbec1b4c3eedcb23c5d3eca
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
-  permission_handler: ccb20a9fad0ee9b1314a52b70b76b473c5f8dab0
+  flutter_contacts: edb1c5ce76aa433e20e6cb14c615f4c0b66e0983
+  permission_handler_apple: 44366e37eaf29454a1e7b1b7d736c2cceaeb17ce
   shared_preferences_foundation: 986fc17f3d3251412d18b0265f9c64113a8c2472
 
 PODFILE CHECKSUM: ef19549a9bc3046e7bb7d2fab4d021637c0c58a3

@@ -1,12 +1,16 @@
-
+import 'package:ant_smartphone_addiction_app/custom_list_tile.dart';
 import 'package:ant_smartphone_addiction_app/time_slot.dart';
 import 'package:ant_smartphone_addiction_app/white_list.dart';
+import 'package:app_usage/app_usage.dart';
+import 'package:device_apps/device_apps.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'package:installed_apps/app_info.dart';
 import 'package:installed_apps/installed_apps.dart';
 import 'package:intl/intl.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:usage_stats/usage_stats.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,7 +22,6 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool on = false;
 
-
   TextEditingController selectDateController = TextEditingController();
   TextEditingController endDateController = TextEditingController();
 
@@ -26,6 +29,10 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   void initState() {
+    WidgetsFlutterBinding.ensureInitialized();
+
+    // initializeNotifications();
+
     selectDateController.text = ""; //set the initial value of text field
     endDateController.text = ""; //set the initial value of text field
 
@@ -282,6 +289,202 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
+  Future<void> _show_Action_Dialog(int index) async {
+    return showDialog<void>(
+      context: context,
+      // barrierDismissible: false, // user must tap button!
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: const Text('Select App Usage Time'),
+          contentPadding: EdgeInsets.zero,
+          content: SingleChildScrollView(
+            child: ListBody(
+              children: <Widget>[
+                InkWell(
+                  child: CustomListTile(
+                    "10 Minutes",
+                    Icons.shopping_bag_outlined,
+                    Icons.keyboard_arrow_right_outlined,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                  },
+                ),
+
+                CustomListTile(
+                  "15 Minutes",
+                  Icons.edit_outlined,
+                  Icons.keyboard_arrow_right_outlined,
+                ),
+
+                InkWell(
+                  child: CustomListTile(
+                    "30 Minutes",
+                    Icons.delete_outline,
+                    Icons.keyboard_arrow_right_outlined,
+                  ),
+                  onTap: () {
+                    Navigator.pop(context);
+                    setState(() {});
+                  },
+                ),
+                // Text('Are you sure you want to logout.'),
+                // Text('Would you like to approve of this message?'),
+              ],
+            ),
+          ),
+          // actions: <Widget>[
+          //   TextButton(
+          //     child: const Text('Yes'),
+          //     onPressed: () async {
+          //       Navigator.of(context).pop();
+          //     },
+          //   ),
+          //   TextButton(
+          //     child: const Text('No'),
+          //     onPressed: () {
+          //       Navigator.of(context).pop();
+          //     },
+          //   ),
+          // ],
+        );
+      },
+    );
+  }
+
+  // final FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin =
+  //     FlutterLocalNotificationsPlugin();
+
+  // Future<void> initializeNotifications() async {
+  //   const AndroidInitializationSettings initializationSettingsAndroid =
+  //       AndroidInitializationSettings('@mipmap/ic_launcher');
+
+  //   final InitializationSettings initializationSettings =
+  //       InitializationSettings(android: initializationSettingsAndroid);
+
+  //   await flutterLocalNotificationsPlugin.initialize(initializationSettings);
+  // }
+
+  // Future<void> showNotification(String title, String body) async {
+  //   const AndroidNotificationDetails androidPlatformChannelSpecifics =
+  //       AndroidNotificationDetails(
+  //     'channel_id',
+  //     'channel_name',
+  //     'channel_description',
+  //     importance: Importance.max,
+  //     priority: Priority.high,
+  //   );
+
+  //   const NotificationDetails platformChannelSpecifics =
+  //       NotificationDetails(android: androidPlatformChannelSpecifics);
+
+  //   await flutterLocalNotificationsPlugin.show(
+  //     0,
+  //     title,
+  //     body,
+  //     platformChannelSpecifics,
+  //   );
+  // }
+
+  // Future<void> setAppTimeLimit(String packageName, int timeLimit) async {
+  //   const MethodChannel platform =
+  //       MethodChannel('com.example.app/app_time_limit');
+
+  //   try {
+  //     await platform.invokeMethod('setAppTimeLimit', {
+  //       'packageName': packageName,
+  //       'timeLimit': timeLimit,
+  //     });
+  //   } on PlatformException catch (e) {
+  //     print('Error setting app time limit: ${e.message}');
+  //   }
+  // }
+
+  // Future<void> checkAppUsageAndNotify() async {
+  //   const MethodChannel platform =
+  //       MethodChannel('com.example.app/check_app_usage');
+
+  //   try {
+  //     final Map<dynamic, dynamic> result =
+  //         await platform.invokeMethod('checkAppUsage');
+
+  //     final String packageName = result['packageName'];
+  //     final int usageTime = result['usageTime'];
+
+  //     if (packageName.isNotEmpty && usageTime > 0) {
+  //       showNotification(
+  //         'Time Limit Reached',
+  //         'The app $packageName has reached the time limit of $usageTime minutes.',
+  //       );
+  //     }
+  //   } on PlatformException catch (e) {
+  //     print('Error checking app usage: ${e.message}');
+  //   }
+  // }
+
+  // List<AppUsageInfo> _infos = [];
+
+  // void getUsageStats() async {
+  //   try {
+  //     print('_______________');
+  //     DateTime endDate = DateTime.now();
+  //     DateTime startDate = endDate.subtract(Duration(minutes: 1));
+
+  //     List<AppUsageInfo> infoList =
+  //         await AppUsage().getAppUsage(startDate, endDate);
+  //     setState(() => _infos = infoList);
+
+  //     for (var info in infoList) {
+  //       print(info.toString());
+  //     }
+
+  //     print('_______send notification______');
+  //   } on AppUsageException catch (exception) {
+  //     print(exception);
+  //   }
+  // }
+
+  _getCurrentOpened() async {
+    DateTime endDate = new DateTime.now();
+    DateTime startDate =
+        DateTime(endDate.year, endDate.month, endDate.day, 0, 0, 0);
+
+    List<UsageInfo> list = await UsageStats.queryUsageStats(startDate, endDate);
+
+    List<UsageInfo> appList = [];
+
+    for (var i in list) {
+      if (_app_packageNames.contains(i.packageName)) {
+        if (!appList.contains(i)) {
+          appList.add(i);
+        }
+      }
+    }
+
+    for (var usageStats in appList) {
+      if (DateTime.now().millisecondsSinceEpoch >=
+          int.parse(usageStats.lastTimeUsed!) + 1000) {
+        // Instagram is opened
+        print('instagram is opened_____');
+      }
+    }
+
+    const List<String> listOfApps = [
+      'com.instagram.android', // android package name of instagram
+    ];
+
+    print(appList);
+  }
+
+  listenApp() async {
+    print('______inside Listen to App _____');
+    DeviceApps.listenToAppsChanges().where((ApplicationEvent event) =>
+        event.packageName == 'com.instagram.android');
+    Application? app = await DeviceApps.getApp('com.instagram.android');
+
+    print(app);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -356,8 +559,10 @@ class _HomeScreenState extends State<HomeScreen> {
               title: const Text('Time Slot'),
               onTap: () {
                 Navigator.pop(context);
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const TimeSlotScreen()));
+                Navigator.push(
+                    context,
+                    MaterialPageRoute(
+                        builder: (context) => const TimeSlotScreen()));
               },
             ),
 
@@ -528,8 +733,7 @@ class _HomeScreenState extends State<HomeScreen> {
               ],
             ),
             const Padding(
-              padding:
-                  EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
+              padding: EdgeInsets.symmetric(horizontal: 20.0, vertical: 20),
               child: Text(
                 'My Profile',
                 style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -613,6 +817,10 @@ class _HomeScreenState extends State<HomeScreen> {
           return InkWell(
             onTap: () {
               print(index);
+              _show_Action_Dialog(index);
+              // getUsageStats();
+              // _getCurrentOpened();
+              listenApp();
             },
             child: Card(
               child: Column(
